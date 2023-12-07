@@ -138,6 +138,45 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
+  getAllChallengesFunctionToTableConnector:
+    Type: AWS::Serverless::Connector
+    Properties:
+      Source:
+        Id: getAllChallengesFunction
+      Destination:
+        Id: ChallengesTable
+      Permissions:
+      - Read
+  getAllChallengesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get_all_challenges.getAllChallengesHandler
+      Runtime: python3.10
+      MemorySize: 128
+      Timeout: 100
+      Description: HTTP get method to get all challenges from the DynamoDB table.
+      Environment:
+        Variables:
+          CHALLENGES_TABLE:
+            Ref: ChallengesTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /challenges
+            Method: GET
+      CodeUri: getAllChallengesFunction
+    Metadata:
+      SamResourceId: getAllChallengesFunction
+  ChallengesTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
 Outputs:
   WebEndpoint:
     Description: API Gateway endpoint URL for Prod stage

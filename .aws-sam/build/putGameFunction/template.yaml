@@ -12,6 +12,7 @@ Globals:
       AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
 
 Resources:
+#User Resource permissions
   getAllGamesFunctionToTableConnector:
     Type: AWS::Serverless::Connector
     Properties:
@@ -51,11 +52,8 @@ Resources:
         Id: GamesTable
       Permissions:
         - Write
-
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-
-  # This is a Lambda function config associated with the source code: get-all-items.js
+  
+# User Lambda Functions
   getAllGamesFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -92,10 +90,7 @@ Resources:
           Properties:
             Path: /{id}
             Method: GET
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
-# This is a Lambda function config associated with the source code: delete-item.js
   deleteGameFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -115,7 +110,6 @@ Resources:
             Path: /{id}
             Method: DELETE
 
-# Put
   putGameFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -135,8 +129,51 @@ Resources:
             Path: /
             Method: POST
 
-  # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
+# DynamoDB table to store user created escape room games
   GamesTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+
+#Admin Resources
+
+# Admin Resource permissions
+  getAllChallengesFunctionToTableConnector:
+    Type: AWS::Serverless::Connector
+    Properties:
+      Source:
+        Id: getAllChallengesFunction
+      Destination:
+        Id: ChallengesTable
+      Permissions:
+        - Read
+
+#Lambda Functions
+  getAllChallengesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get_all_challenges.getAllChallengesHandler
+      Runtime: python3.10
+      MemorySize: 128
+      Timeout: 100
+      Description: HTTP get method to get all challenges from the DynamoDB table.
+      Environment:
+        Variables:
+          CHALLENGES_TABLE: !Ref ChallengesTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /challenges
+            Method: GET
+
+# DynamoDB table to store admin created escape room challenges
+  ChallengesTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
       PrimaryKey:
