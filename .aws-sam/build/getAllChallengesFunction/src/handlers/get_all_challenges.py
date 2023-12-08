@@ -29,6 +29,11 @@ def getAllChallengesHandler(event, context):
         # Return the list of challenges as JSON
         return {
             'statusCode': 200,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': 'true',
+        },
             'body': json.dumps(challenge_list)
         }
     except ClientError as e:
