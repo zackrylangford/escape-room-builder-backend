@@ -37,9 +37,15 @@ def putGameHandler(event, context):
         # Add more attributes as needed
     }
 
-    # Add the challenges to the game item (you may need to adjust the structure)
     if challenges:
-        game_item["Challenges"] = {"L": [{"M": {"Title": {"S": c.get("title", "")}, "Description": {"S": c.get("description", "")}}} for c in challenges]}
+        game_item["Challenges"] = {"L": [
+            {
+                "M": {
+                    "Title": {"S": c.get("title", "")},
+                    "Description": {"S": c.get("description", "")},
+                    "Type": {"S": c.get("type", "")}  # Include challenge type here
+                }
+            } for c in challenges]}
 
     try:
         # Put the game item into DynamoDB
