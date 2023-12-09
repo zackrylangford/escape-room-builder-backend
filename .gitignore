@@ -1,0 +1,50 @@
+# Ignore AWS SAM build artifacts
+.aws-sam/
+.aws-sam/build/
+
+# Ignore local development dependencies (Node.js)
+node_modules/
+
+# Ignore Python virtual environment
+.env/
+
+# Ignore serverless deployment artifacts
+.template-sam.json
+template-output.json
+
+# Ignore AWS CloudFormation stack artifacts
+.cfn/
+
+# Ignore serverless plugins configuration
+.serverless/
+
+# Ignore AWS SAM build artifacts
+.build-sam/
+
+# Ignore editor and IDE files
+.vscode/
+.idea/
+
+# Ignore local environment files (e.g., .env, .env.local)
+.env*
+*.local
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore logs and generated files
+log/
+logs/
+*.log
+
+# Ignore temporary files
+*.tmp
+*.tmp.*
+*~
+
+# Ignore package manager lock files
+yarn.lock
+package-lock.json
+
+# Ignore user-specific files
+npm-debug.log*
