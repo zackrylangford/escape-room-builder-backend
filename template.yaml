@@ -32,6 +32,16 @@ Resources:
         Id: GamesTable
       Permissions:
         - Read
+  
+  editGameByIdFunctionToTableConnector:
+    Type: AWS::Serverless::Connector
+    Properties:
+      Source:
+        Id: editGameByIdFunction
+      Destination:
+        Id: GamesTable
+      Permissions:
+        - Write
 
   putGameFunctionToTableConnector:
     Type: AWS::Serverless::Connector
@@ -90,6 +100,24 @@ Resources:
           Properties:
             Path: /{id}
             Method: GET
+  editGameByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/edit_game_by_id.editGameByIdHandler
+      Runtime: python3.10
+      MemorySize: 128
+      Timeout: 100
+      Description: HTTP put method to edit one game by id from the DynamoDB table.
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          GAMES_TABLE: !Ref GamesTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /{id}
+            Method: PUT
 
   deleteGameFunction:
     Type: AWS::Serverless::Function
