@@ -17,6 +17,9 @@ Welcome to the **Escape Room Builder Backend** repository! This project is an in
 - **Database**: DynamoDB - NoSQL database for storing escape room game definitions as well as challenge definitions created by game admins.
 - **Authentication**: Cognito - User authentication and authorization.
 - **API**: API Gateway - REST API for interacting with the backend.
+
+For detailed information about the API endpoints, refer to the [OpenAPI Specification](./escape-room-api-spec.yaml).
+
 - **Lambda Functions**: Lambda functions for interacting with the database and performing CRUD operations.
 - **Hosting**: Hosted on AWS. 
 - **Frontend Integration**: Connects with [Escape Room Builder Frontend](https://github.com/zackrylangford/escape-room-builder-frontend).

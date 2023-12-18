@@ -1,0 +1,62 @@
+openapi: 3.0.0
+info:
+  title: Escape Room Builder API
+  version: 1.0.0
+  description: API to manage escape room games, allowing retrieval of all games.
+
+servers:
+  - url: https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod
+    description: Production server
+
+paths:
+  /:
+    get:
+      summary: Get All Games
+      description: Retrieves a list of all escape room games from the DynamoDB table.
+      operationId: getAllGames
+      responses:
+        '200':
+          description: A list of games successfully retrieved.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Game'
+        '500':
+          description: Internal server error indicating a failure in processing the request.
+
+components:
+  schemas:
+    Game:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the game.
+        GameTitle:
+          type: string
+          description: Title of the game.
+        GameDescription:
+          type: string
+          description: Description of the game.
+        TimeLimit:
+          type: integer
+          description: Time limit for the game in seconds.
+        Challenges:
+          type: array
+          description: Array of challenges included in the game.
+          items:
+            $ref: '#/components/schemas/Challenge'
+    Challenge:
+      type: object
+      properties:
+        Title:
+          type: string
+          description: Title of the challenge.
+        Description:
+          type: string
+          description: Description of the challenge.
+        Type:
+          type: string
+          description: Type of the challenge (e.g., Trivia, Physical Challenge).
